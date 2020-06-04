@@ -710,6 +710,7 @@ export default {
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
         line-height: 80px;
+        font-family: PingFang SC;
         .buy_reality_money {
             color: #ef5c41;
             font-size: 38px;
