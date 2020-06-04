@@ -146,16 +146,14 @@
         <div class="buy">
             <div class="buy_reality">
                 原价
-                <span class="buy_reality_money">¥{{ list.price }}</span>
+                <span class="buy_reality_money">¥ {{ list.price }}</span>
             </div>
             <div class="buy_btns" v-if="list.is_collage==1">
                 <div class="buy_btn" @click.stop="payment(1,'')">
-                    <span>¥{{ list.collage_price }}</span>
-                    <br />拼单购买
+                    <span>¥{{ list.collage_price }}</span><br />拼单购买
                 </div>
                 <div class="buy_btn red" @click.stop="payment(0,'')">
-                    <span>¥{{ list.price }}</span>
-                    <br />直接购买
+                    <span>¥{{ list.price }}</span><br />直接购买
                 </div>
             </div>
             <div class="greenBtn" v-if="list.is_collage==0" @click.stop="payment(0,'')">确认支付</div>
@@ -550,7 +548,8 @@ export default {
         border-radius: 12px;
         overflow: hidden;
         background: rgba(52, 52, 52, 1);
-        box-shadow: 0px 1px 8px 0px rgba(227, 226, 226, 0.66);
+        // box-shadow: 0px 1px 8px 0px rgba(227, 226, 226, 0.66);
+        box-shadow: 0px 0px 9px 2px #E3E2E2;
         img {
             width: 100%;
             height: 100%;
@@ -706,7 +705,6 @@ export default {
     box-shadow: 0px 0px 6px 0px rgba(214, 214, 214, 0.35);
     .buy_reality {
         font-size: 28px;
-        font-family: Source Han Sans CN;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
         line-height: 80px;
@@ -742,10 +740,14 @@ export default {
         align-items: center;
         overflow: hidden;
         height: 80px;
+        box-sizing: border-box;
         .buy_btn {
-            flex: 1;
-            height: 100%;
+            width: 206px;
+            height: 80px;
+            box-sizing: border-box;
             text-align: center;
+            line-height: 30px;
+            padding-top: 10px;
             span {
                 font-size: 28px;
             }
@@ -792,10 +794,11 @@ export default {
                 border-radius: 50%;
                 overflow: hidden;
                 margin-right: 20px;
-                > img {
-                    width: 100%;
-                    height: 100%;
-                }
+            }
+            .head img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
             }
             .info {
                 width: 462px;
@@ -889,10 +892,11 @@ export default {
                 border-radius: 50%;
                 overflow: hidden;
                 margin-right: 20px;
-                > img {
-                    width: 100%;
-                    height: 100%;
-                }
+            }
+            .head img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
             }
             .name {
                 width: 180px;
