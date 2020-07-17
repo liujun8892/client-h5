@@ -48,6 +48,14 @@ const routes = [ {
     path:'/h5/answer', 
     name:'Answer', 
     component:() => import(/* webpackChunkName: "about" */'../pages/Answer.vue')
+  },  {
+    path:'/h5/join', 
+    name:'JoinClass', 
+    component:() => import('../pages/JoinClass.vue')
+  },  {
+    path:'/h5/download2', 
+    name:'Download2', 
+    component:() => import('../pages/Download2.vue')
   }
 ]
 

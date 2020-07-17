@@ -18,6 +18,9 @@ export const getAudioDetail = (data) => post(`getAudioDetail`, designSign(data))
 export const getMemorySubject = (data) => post(`getMemorySubject`, designSign(data)); // 获取题目
 export const getMemoryAnswer = (data) => post(`getMemoryAnswer`,designSign(data)); // 提交答案
 
+export const addLessClassH5 = (data) => post(`addLessClassH5`,designSign(data)); // H5加入班级
+
+
 
 
 
