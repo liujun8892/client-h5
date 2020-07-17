@@ -56,6 +56,10 @@ const routes = [ {
     path:'/h5/download2', 
     name:'Download2', 
     component:() => import('../pages/Download2.vue')
+  },  {
+    path:'/h5/article', 
+    name:'Article', 
+    component:() => import('../pages/Article.vue')
   }
 ]
 

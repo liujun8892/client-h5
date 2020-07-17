@@ -19,6 +19,8 @@ export const getMemorySubject = (data) => post(`getMemorySubject`, designSign(da
 export const getMemoryAnswer = (data) => post(`getMemoryAnswer`,designSign(data)); // 提交答案
 
 export const addLessClassH5 = (data) => post(`addLessClassH5`,designSign(data)); // H5加入班级
+export const informationDetail = (data) => post(`informationDetail`,designSign(data)); // 文章资讯详情
+
 
 
 
