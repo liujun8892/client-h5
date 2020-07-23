@@ -109,11 +109,14 @@ export default {
     watch: {
         list: {
             handler: function(list) {
+                console.log(list)
                 this.treeParams = Object.assign(this.treeParams, this.params);
                 // console.log(this.treeParams, this.params);
+                this.treeList=[];
                 this.renderTreeList(list);
             },
-            deep: true //对象内部的属性监听，也叫深度监听
+            deep: true, //对象内部的属性监听，也叫深度监听
+            immediate: true,
         }
     },
     methods: {
@@ -141,7 +144,8 @@ export default {
                     level: item.level,
                     is_play: item.is_play,
                     judge_level: item.judge_level,
-                    is_dir: item.is_dir
+                    is_dir: item.is_dir,
+                    audio_file:item.audio_file
                 });
                 if (Array.isArray(item.list) && item.list.length > 0) {
                     let parents = [...parentId];

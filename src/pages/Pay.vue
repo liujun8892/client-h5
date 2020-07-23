@@ -58,16 +58,16 @@
                 <li>
                     <span></span>购买后可在APP —“学习”中查看和使用。
                 </li>
-                <li v-if="list.is_collage==1" style="padding-bottom:48px;">
+                <!-- <li v-if="list.is_collage==1" style="padding-bottom:48px;">
                     <span></span>如果拼单失败，金额将直接退还到微信支付钱包。
-                </li>
+                </li> -->
             </ul>
         </div>
         <!-- 分隔线 -->
-        <div class="separate" v-if="list.is_collage==1"></div>
+        <!-- <div class="separate" v-if="list.is_collage==1"></div> -->
 
         <!-- 拼团 -->
-        <div class="pin" v-if="list.is_collage==1">
+        <!-- <div class="pin" v-if="list.is_collage==1">
             <div class="pinTop">
                 <div>{{collage_list.length}}人正在拼团，可直接参与</div>
                 <div class="gray" @click="open">
@@ -140,27 +140,27 @@
                     </swiper-slide>
                 </swiper>
             </div>
-        </div>
+        </div> -->
 
         <!-- buy 购买 -->
         <div class="buy">
             <div class="buy_reality">
-                原价
+                应付
                 <span class="buy_reality_money">¥ {{ list.price }}</span>
             </div>
-            <div class="buy_btns" v-if="list.is_collage==1">
+            <!-- <div class="buy_btns" v-if="list.is_collage==1">
                 <div class="buy_btn" @click.stop="payment(1,'')">
                     <span>¥{{ list.collage_price }}</span><br />拼单购买
                 </div>
                 <div class="buy_btn red" @click.stop="payment(0,'')">
                     <span>¥{{ list.price }}</span><br />直接购买
                 </div>
-            </div>
-            <div class="greenBtn" v-if="list.is_collage==0" @click.stop="payment(0,'')">确认支付</div>
+            </div> -->
+            <div class="greenBtn" @click.stop="payment(0,'')">确认支付</div>
         </div>
 
         <!-- 拼单弹窗 -->
-        <div v-show="showAll" class="pinMask">
+        <!-- <div v-show="showAll" class="pinMask">
             <div class="pinPopup">
                 <div class="top">
                     <span>正在拼单</span>
@@ -192,7 +192,7 @@
                     <div class="endTip" v-if="collage_list.length===10">仅显示10个可插队的拼单</div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

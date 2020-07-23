@@ -1,6 +1,6 @@
 <template>
-	<div id="course">
-		<div v-show="courseIntroduce">
+	<div id="course" v-show="courseIntroduce" >
+		<div v-if="courseIntroduce.type!=1">
 			<div class="course_top">
 				<div class="box_modol"></div>
 				<div
@@ -31,50 +31,61 @@
 				</div>
 			</div>
 			<div class="separate"></div>
-			<!-- 
-      <div class="cutTab" v-if="!courseIntroduce.is_buy">
-      <div class="cutTab_one" v-if="courseIntroduce.is_buy">
-        课程学习
-      </div>
-            -->
-			<div class="cutTab">
-				<div :class="['tab']" @click="cutTab(1)">
-					课程介绍
-					<div :class="{ active: active == 1 }"></div>
-				</div>
-				<div :class="['tab']" @click="cutTab(2)">
-					课程目录
+			
+			<div class="cutTab_one" v-if="courseIntroduce.is_buy">课程学习</div>
+           
+			<div class="cutTab" v-if="!courseIntroduce.is_buy">
+				<div :class="['tab',{ active: active == 1 }]" @click="cutTab(1)">课程介绍</div>
+				<div :class="['tab',{ active: active == 2 }]" @click="cutTab(2)">课程目录
 					<div class="audition" v-if="courseIntroduce.is_shiting">试听</div>
-					<div :class="{ active: active == 2 }"></div>
 				</div>
 			</div>
-
-			<!-- 
-      <div
-        class="cutTab_content"
-        :class="{ cutTab_bottom: !courseIntroduce.is_buy }"
-        v-show="active == 1 && !courseIntroduce.is_buy"
-      >
-            -->
-			<div class="cutTab_content" :class="{ cutTab_bottom: !courseIntroduce.is_buy }" v-show="active == 1">
-				<div class="loadimage" v-for="(item, index) of courseIntroduce.course_poster" :key="index"><img v-lazy="$iconURL + item" /></div>
-			</div>
-			<div class="cutTab_contents" :class="{ cutTab_bottom: !courseIntroduce.is_buy }" v-show="active == 2">
-				<mix-tree :list="courseIntroduce.list" :params="treeParams" @treeItemClick="treeItemClick" ref="mixTree"></mix-tree>
-				<div class="cutTab_bottoms">- 下面没有了 -</div>
-			</div>
-
-			<!--   <div class="purchases" v-if="!courseIntroduce.is_buy">  -->
-			<div class="purchases">
-				<div class="money">¥{{ courseIntroduce.price }}</div>
-				<div class="button" @click="pay">
-					<span v-if="courseIntroduce.is_free">立即领取</span>
-					<span v-else>立即购买</span>
-				</div>
-			</div>
-
-			<Register ref="register" @emitFree="emitFree" @collage="payment"></Register>
 		</div>
+		<div v-if="courseIntroduce.type==1">
+			<div class="videoBg" style="background-color: #f00;" ></div>
+			<video id="myVideo" ref="myVideo"
+				class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9"
+				controls type="application/x-mpegURL" allowsInlineMediaPlayback=YES webview.allowsInlineMediaPlayback=YES
+				webkit-playsinline="true" playsinline="true"  x5-video-player-type="h5" x5-video-player-fullscreen="true"
+				:poster="iconURL + courseIntroduce.cover"> 
+			</video>
+			<div class="cutTab_one cutTab_video" v-if="courseIntroduce.is_buy">课程学习</div>
+			<div class="cutTab cutTab2" v-if="!courseIntroduce.is_buy">
+				<div :class="['tab',{ active: active == 1 }]" @click="cutTab(1)">课程介绍</div>
+				<div :class="['tab',{ active: active == 2 }]" @click="cutTab(2)">课程目录
+					<div class="audition" v-if="courseIntroduce.is_shiting">试看</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="cutTab_content" :class="{ cutTab_bottom: !courseIntroduce.is_buy }" v-show="active == 1 && !courseIntroduce.is_buy">
+			<div class="content_box" v-if="courseIntroduce.type==1">
+				<div class="content_box_pos">
+					<div class="teacher_avatar"><img :src="iconURL + courseIntroduce.teacher_avatar"/></div>
+					<div class="teacher_right">
+						<div class="title">{{ courseIntroduce.title }}</div>
+						<div class="course_desc">{{ courseIntroduce.course_desc }}</div>
+						<div class="teacher_name">主讲老师：{{ courseIntroduce.teacher_name }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="loadimage" v-for="(item, index) of courseIntroduce.course_poster" :key="index"><img v-lazy="$iconURL + item" /></div>
+		</div>
+		<div class="cutTab_contents" :class="{ cutTab_bottom: !courseIntroduce.is_buy }" v-show="active == 2 || courseIntroduce.is_buy">
+			<mix-tree :list="list" :params="treeParams" @treeItemClick="treeItemClick" ref="mixTree"></mix-tree>
+			<div class="cutTab_bottoms">- 下面没有了 -</div>
+		</div>
+
+		<div class="purchases" v-if="!courseIntroduce.is_buy">
+			<div class="money">¥{{ courseIntroduce.price }}</div>
+			<div class="button" @click="pay">
+				<span v-if="courseIntroduce.is_free">立即领取</span>
+				<span v-else>立即购买</span>
+			</div>
+		</div>
+
+		<Register ref="register" @emitFree="emitFree" @collage="payment"></Register>
+		
 		<img src="../assets/images/loading.gif" class="is_loading" v-if="loading_show" />
 
 		<van-overlay v-show="showOverlay" class="ignore">
@@ -112,6 +123,8 @@ import { Overlay } from 'vant';
 import { GetQueryString } from '@/common/utils/mixin.js';
 import Register from '@/components/Register';
 import mixTree from '@/components/mix-tree';
+import videojs from 'video.js'
+import 'video.js/dist/video-js.css'
 export default {
 	name: 'Home',
 	components: {
@@ -143,7 +156,18 @@ export default {
 			course_id: '',
 			collage_order_no: '',
 			username: '',
-			collage_price: ''
+			collage_price: '',
+			player:'',
+			options:{
+				playbackRates: [0.5, 1, 1.5, 2],
+				fullscreen:{
+					navigationUI: 'hide'
+				},
+				controlBar: {
+					fullscreenToggle: true,
+					playbackRateMenuButton: true,
+				}
+			}
 		};
     },
 	methods: {
@@ -184,32 +208,40 @@ export default {
 					}
 				});
 		},
+		async updateIsPlay(courseItem={}, list=[]){
+			await list.forEach((item, index)=>{
+				if (Array.isArray(item.list) && item.list.length > 0) {
+					this.updateIsPlay(courseItem, item.list);
+				}else{
+					list[index].is_play=0;
+					if(courseItem.id==item.id && courseItem.course_id==item.course_id){
+						list[index].is_play=1;
+					}
+				}
+			});
+		},
 		treeItemClick(item) {
 			console.log(item);
 			let { id, status } = item;
 			if (!status) {
 				return;
 			}
+			this.updateIsPlay(item,this.courseIntroduce.list);
+			if(this.courseIntroduce.type==1){
+				console.log('切换视频')
+				var data = {
+					src: this.iconURL + item.audio_file,
+					type: 'video/mp4'
+				};
+				this.player.src(data);
+				this.player.load(data);
+				this.player.play();
+				return;
+			}
 			this.$router.push({
 				path: '/h5/AudioDetails',
 				query: { audio_id: id, course_id: this.course_id }
 			});
-			// //课程目录点击回调
-			// let { id, status, is_play } = item;
-			// // <!-- // 0锁住 1试听 2播放 3已听完 -->
-			// if (!status) {
-			// 	return;
-			// }
-			// if (is_play) {
-			// 	uni.navigateTo({
-			// 		url: `../coursewareDetails/coursewareDetails?audio_id=${id}&view_time=${this.view_time}`
-			// 	});
-			// } else {
-			// 	uni.navigateTo({
-			// 		url: `../coursewareDetails/coursewareDetails?audio_id=${id}&course_id=${this.course_id}`
-			// 	});
-			// }
-			// console.log(item);
 		},
 		pay() {
 			if (this.courseIntroduce.is_buy) {
@@ -297,13 +329,11 @@ export default {
 		},
 
 		authorize() {
-			this.$api.getCourse({ page: 1, pageSize: 20, course_id: this.course_id }).then(res => {
-				console.log(res);
+			this.$api.getCourse({ course_id: this.course_id }).then(res => {
 				this.loading_show = false;
 				if (res.code != 200) return;
 				this.courseIntroduce = res.data;
-                this.list = this.courseIntroduce.list;
-
+				this.list = res.data.list;
                 if (!res.data.is_buy) {
                     if (this.$route.query.collage_order_no!='' && this.$route.query.collage_order_no!=0
                         && this.$route.query.collage_order_no!='0' &&
@@ -313,10 +343,12 @@ export default {
                         this.collage_price = this.$route.query.collage_price;
                         this.showOverlay = true;
                     }
-                }
+				}
+				console.log(this.$refs.myVideo)
+				this.$nextTick(()=>{
+					this.player = videojs(this.$refs.myVideo, this.options);
+				})
             });
-            
-            
             
 		},
 		partake() {
@@ -410,11 +442,16 @@ export default {
 				if (res.code == 200) {
 					this.$store.dispatch('saveToken', res.data.token);
 					this.is_bindphone = res.data.is_bindphone;
-					// this.is_bindphone = 0;
 					this.authorize();
 				}
 			});
         }
+	},
+	mounted(){
+		
+	},
+	beforeDestroy(){
+		videojs(this.$refs.myVideo).dispose();
 	},
 	destroyed() {
         this.loading_show = false;
@@ -480,7 +517,18 @@ export default {
 		width: 100%;
 		height: 20px;
 		background: rgba(240, 240, 240, 1);
-		margin-bottom: 32px;
+	}
+	.videoBg{
+		height: 550px;
+	}
+	#myVideo{
+		display: block;
+		width: 100%;
+		height: 450px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 1000;
 	}
 	.is_loading {
 		position: fixed;
@@ -578,6 +626,9 @@ export default {
 	.cutTab {
 		width: 100%;
 		display: flex;
+		height: 60px;
+		line-height: 60px;
+		padding: 20px 0;
 		.tab {
 			width: 50%;
 			font-size: 36px;
@@ -594,23 +645,21 @@ export default {
 				box-shadow: 0px 2px 8px 0px rgba(243, 133, 99, 0.15);
 				border-radius: 21px 17px 17px 2px;
 				font-size: 22px;
-				line-height: 35px;
+				line-height: 34px;
 				font-family: Source Han Sans CN;
 				font-weight: 400;
 				color: rgba(255, 255, 255, 1);
 				position: absolute;
-				right: 42px;
-				top: -5px;
-				// display: flex;
-				// justify-content: center;
-				// align-content: center;
+				right: 20px;
+				top: -3px;
 			}
 		}
 		.active {
 			color: rgba(42, 193, 124, 1);
 			position: relative;
 		}
-		.active {
+		.active::after {
+			content: '';
 			position: absolute;
 			width: 52px;
 			height: 6px;
@@ -621,18 +670,33 @@ export default {
 			margin-left: -26px;
 		}
 	}
+	.cutTab2{
+		position: fixed;
+		top: 450px;
+		left: 0;
+		z-index: 100;
+		background-color: #fff;
+	}
 
 	.cutTab_one {
 		width: 100%;
-		height: 34px;
+		height: 100px;
 		display: flex;
 		justify-content: center;
 		font-size: 36px;
-		height: 34px;
+		line-height: 100px;
 		color: rgba(85, 85, 85, 1);
+		background-color: #fff;
+		font-family: PingFang SC;
+	}
+	.cutTab_video{
+		position: fixed;
+		top: 450px;
+		left: 0;
+		z-index: 100;
 	}
 	.cutTab_content {
-		margin: 42px 32px;
+		padding: 32px;
 		img {
 			display: block;
 			width: 100%;
@@ -640,9 +704,29 @@ export default {
 		.loadimage {
 			width: 100%;
 		}
+		.content_box{
+			height: auto;
+			z-index: 1;
+			margin: 0 auto 32px;
+			padding-top: 30px;
+			.content_box_pos{
+				position: static;
+				top: 0;
+				.teacher_right .title{
+					color: #333;
+				}
+			}
+			.teacher_avatar{
+				// margin-left: 0;
+				img{object-fit: cover;}
+			}
+		}
+		.content_box::after{
+			height: 0;
+		}
 	}
 	.cutTab_contents {
-		margin: 42px 0px;
+		padding: 32px 0;
 		.cutTab_bottoms {
 			font-size: 22px;
 			font-family: Source Han Sans CN;
@@ -653,7 +737,7 @@ export default {
 		}
 	}
 	.cutTab_bottom {
-		margin-bottom: 160px;
+		padding-bottom: 160px;
 	}
 
 	.purchases {
