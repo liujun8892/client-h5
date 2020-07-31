@@ -11,55 +11,50 @@
         <div class="desc">
             <div class="desc-photo">
                 <img :src="$iconURL + list.cover" alt />
+                <span class="tag">课程</span>
             </div>
             <div class="desc-subject">
                 <div class="desc-subject-title">{{ list.title }}</div>
-                <div class="desc-subject-money">
-                    <div class="desc-subject-money-author">{{ list.teacher_name }}</div>
-                    <div class="desc-subject-money-sumo">
-                        <span>¥</span>
-                        {{ list.price }}
-                    </div>
-                </div>
+                <div class="desc-subject-money">¥{{ list.price }}</div>
             </div>
         </div>
         <!-- 分隔线 -->
-        <div class="separate"></div>
+        <!-- <div class="separate"></div> -->
         <!-- pay -->
         <div class="pay">
-            <div class="pay-title">支付方式</div>
-            <div class="pay-weixin" @click="chooseWeixin">
-                <div class="pay-weixin-logo">
-                    <div class="img">
-                        <img src="../assets/images/weixin.png" alt />
+            <div class="pay-title">支付方式：</div>
+            <div class="box">
+                <div class="box_item" @click="chooseWeixin">
+                    <div class="logo">
+                        <img src="../assets/images/pay/pay_2.png" alt />
                     </div>
-                    <div class="pay-weixin-text">微信支付</div>
+                    <div class="text">微信支付</div>
+                    <div v-if="choose" class="choose">
+                        <img src="../assets/images/pay/select.png" alt />
+                    </div>
                 </div>
-                <div v-if="choose" class="pay-weixin-choose">
-                    <img src="../assets/images/finish.png" alt />
-                </div>
+                <!-- <div class="box_item" @click="chooseAlipay">
+                    <div class="logo">
+                        <img src="../assets/images/pay/pay_1.png" alt />
+                    </div>
+                    <div class="text">支付宝支付</div>
+                    <div v-if="!choose" class="choose">
+                        <img src="../assets/images/pay/select.png" alt />
+                    </div>
+                </div> -->
             </div>
-            <!-- <div class="pay-alipay" @click="chooseAlipay">
-        <div class="pay-alipay-logo">
-          <img src="../assets/images/alipay.png" alt />
-          <div class="pay-alipay-text">支付宝支付</div>
-        </div>
-        <div v-if="!choose" class="pay-alipay-choose">
-          <img src="../assets/images/finish.png" alt />
-        </div>
-            </div>-->
         </div>
         <!-- explain 说明 -->
         <div class="explain">
             <ul>
                 <li>
-                    <span></span>您将购买的课程为线上课程内容服务，基于在线内容的特殊性及产品的整体性，购买使用全部或部分内容后不支持退款、转让，望您知悉并理解。
+                    您将购买的课程为线上课程内容服务，基于在线内容的特殊性及产品的整体性，购买使用全部或部分内容后不支持退款、转让，望您知悉并理解。
                 </li>
                 <li>
-                    <span></span>购买后可在APP —“学习”中查看和使用。
+                    购买后可在APP —“学习”中查看和使用。
                 </li>
                 <!-- <li v-if="list.is_collage==1" style="padding-bottom:48px;">
-                    <span></span>如果拼单失败，金额将直接退还到微信支付钱包。
+                    如果拼单失败，金额将直接退还到微信支付钱包。
                 </li> -->
             </ul>
         </div>
@@ -230,7 +225,8 @@ export default {
                         this.slideTo(0, 0, false)
                     }
                 }
-            }
+            },
+            invite:''  //分销邀请者id
         };
     },
     components: {
@@ -328,8 +324,9 @@ export default {
             let params = {
                 course_id: this.course_id,
                 pay_type: 2,
-                is_collage: is_collage,
-                collage_order_no: collage_order_no
+                invite: this.invite
+                // is_collage: is_collage,
+                // collage_order_no: collage_order_no
             };
             this.$api.createBuyCourseWap(params).then(res => {
                 console.log(res);
@@ -492,6 +489,9 @@ export default {
     },
     created() {
         this.course_id = this.$GetQueryString("course_id");
+        this.invite = this.$GetQueryString("invite");
+        console.log('course_id:'+this.course_id+'===='+'invite：'+this.invite)
+        
         this.$api.getConfirmOrder({ course_id: this.course_id }).then(res => {
             console.log(res);
             if (res.code == 200) {
@@ -525,6 +525,9 @@ export default {
 
 .all-main {
     height: 100vh;
+    padding-top: 20px;
+    background-color: #F7F7F7;
+    box-sizing: border-box;
 }
 .van-nav {
     height: 60px;
@@ -536,64 +539,65 @@ export default {
 }
 // desc 描叙
 .desc {
-    margin-top: 50px;
-    height: 184px;
-    padding: 0 35px 54px 32px;
+    width: 714px;
+    background:rgba(255,255,255,1);
+    border-radius:17px;
+    margin-left: 14px;
+    box-sizing: border-box;
+    padding: 30px 18px;
     display: flex;
     .desc-photo {
-        flex-shrink: 1;
-        flex-grow: 0;
-        width: 328px;
-        height: 184px;
-        border-radius: 12px;
+        width:218px;
+        height:146px;
+        border-radius:8px;
         overflow: hidden;
-        background: rgba(52, 52, 52, 1);
-        // box-shadow: 0px 1px 8px 0px rgba(227, 226, 226, 0.66);
-        box-shadow: 0px 0px 9px 2px #E3E2E2;
+        position: relative;
+        margin-right: 16px;
+        background-color: #F7F7F7;
         img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width:100%;
+            height:100%;
+            border-radius:8px;
+        }
+        .tag{
+            display: inline-block;
+            width:40px;
+            height:24px;
+            background:rgba(255,255,255,0.36);
+            border-radius:4px;
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-align: center;
+            line-height: 24px;
         }
     }
     .desc-subject {
-        margin-left: 32px;
-        box-sizing: border-box;
-        height: 184px;
+        position: relative;
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         .desc-subject-title {
-            padding-top: 10px;
-            letter-spacing: 2px;
-            font-size: 32px;
-            font-family: PingFang SC;
-            font-weight: bold;
-            color: rgba(0, 0, 0, 1);
-            line-height: 40px;
+            font-size:30px;
+            color:rgba(51,51,51,1);
+            line-height:38px;
+            height: 76px;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
         }
         .desc-subject-money {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            .desc-subject-money-author {
-                font-size: 24px;
-                font-family: Source Han Sans CN;
-                font-weight: bold;
-                color: rgba(157, 157, 157, 1);
-                height: 30px;
-            }
-            .desc-subject-money-sumo {
-                font-size: 32px;
-                font-family: PingFang SC;
-                font-weight: bold;
-                height: 38px;
-                color: rgba(239, 92, 65, 1);
-                span {
-                    padding-right: 8px;
-                }
-            }
+            font-size:26px;
+            font-weight: bold;
+            color:rgba(255,127,0,1);
+            line-height:30px;
         }
     }
 }
@@ -605,89 +609,58 @@ export default {
 }
 // pay 支付方式
 .pay {
-    margin: 0 34px 0 32px;
+    margin-top: 30px;
     .pay-title {
-        font-size: 32px;
-        font-family: Source Han Sans CN;
-        font-weight: 500;
-        color: rgba(51, 51, 51, 1);
-        padding-top: 60px;
-        padding-bottom: 6px;
+        padding: 17px 32px 20px;
+        font-size: 26px;
+        color: #646464;
     }
-    .pay-weixin,
-    .pay-alipay {
-        padding: 46px 0;
-        border-bottom: 2px solid rgba(245, 245, 245, 1);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .pay-weixin-logo {
+    .box{
+        width:714px;
+        background:rgba(255,255,255,1);
+        border-radius:16px;
+        margin-left: 14px;
+        .box_item{
+            width: 678px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
-            .img {
-                width: 68px;
-                height: 64px;
-                margin-right: 16px;
+            padding: 40px 0;
+            .logo{
+                width: 38px;
+                height: 38px;
+                margin-right: 18px;
+                img{
+                    width: 38px;
+                    height: 38px;
+                }
             }
-            img {
-                width: 100%;
-                height: 100%;
-            }
-            .pay-weixin-text {
+            .text{
                 font-size: 28px;
-                font-family: Source Han Sans CN;
-                font-weight: 400;
-                color: rgba(68, 68, 68, 1);
-                line-height: 50px;
+                color: #444444;
+                flex: 1;
             }
-        }
-        .pay-alipay-logo {
-            display: flex;
-            align-items: center;
-            img {
-                width: 68px;
-                height: 68px;
-                margin-right: 16px;
-            }
-            .pay-alipay-text {
-                font-size: 28px;
-                font-family: Source Han Sans CN;
-                font-weight: 400;
-                color: rgba(68, 68, 68, 1);
-                line-height: 50px;
-            }
-        }
-        .pay-weixin-choose,
-        .pay-alipay-choose {
-            width: 34px;
-            height: 24px;
-            img {
-                width: 34px;
-                height: 24px;
+            .choose {
+                width: 32px;
+                height: 32px;
+                margin-left: 18px;
+                img{
+                    width: 32px;
+                    height: 32px;
+                }
             }
         }
     }
 }
 // explain 说明
 .explain {
-    padding: 0 53px 0 50px;
+    padding: 0 30px;
+    margin: 18px auto;
     li {
-        padding-top: 32px;
-        font-size: 24px;
-        font-family: Source Han Sans CN;
-        font-weight: 400;
-        color: rgba(153, 153, 153, 1);
-        line-height: 34px;
-        position: relative;
-        span {
-            position: absolute;
-            width: 7px;
-            height: 7px;
-            background: rgba(153, 153, 153, 1);
-            border-radius: 50%;
-            left: -16px;
-            top: 46px;
-        }
+        font-size:22px;
+        color: #BBBBBB;
+        line-height:30px;
+        padding-bottom: 8px;
     }
 }
 // buy 购买
@@ -699,36 +672,31 @@ export default {
     box-sizing: border-box;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 32px;
+    padding: 12px 22px;
     bottom: 0px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 0px 6px 0px rgba(214, 214, 214, 0.35);
     .buy_reality {
-        font-size: 28px;
-        font-weight: bold;
-        color: rgba(51, 51, 51, 1);
-        line-height: 80px;
-        font-family: PingFang SC;
+        padding-left: 16px;
+		font-size: 34px;
+		font-weight: bold;
+		color: #292929;
+		line-height: 76px;
         .buy_reality_money {
-            color: #ef5c41;
-            font-size: 38px;
+            color: #FF7F00;
+			font-size: 30px;
         }
     }
     .greenBtn {
-        width: 240px;
-        height: 80px;
-        background: linear-gradient(
-            -37deg,
-            rgba(42, 193, 124, 1),
-            rgba(42, 193, 145, 1)
-        );
-        box-shadow: 0px 10px 30px 0px rgba(51, 226, 148, 0.5);
-        border-radius: 40px;
-        font-size: 30px;
+        width:218px;
+        height:76px;
+        background:linear-gradient(81deg,rgba(250,104,103,1) 1%,rgba(247,146,104,1) 100%);
+        border-radius:38px;
+        font-size:28px;
         font-weight: bold;
-        color: rgba(255, 255, 255, 1);
+        color:rgba(255,255,255,1);
+        line-height:76px;
         text-align: center;
-        line-height: 80px;
     }
     .buy_btns {
         width: 412px;

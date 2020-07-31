@@ -167,7 +167,8 @@ export default {
 					fullscreenToggle: true,
 					playbackRateMenuButton: true,
 				}
-			}
+			},
+			invite:''
 		};
     },
 	methods: {
@@ -303,7 +304,10 @@ export default {
 				} else {
 					this.$router.push({
 						path: '/h5/pay',
-						query: { course_id: this.course_id }
+						query: { 
+							course_id: this.course_id,
+							invite: this.invite
+						}
 					});
 				}
 			} else {
@@ -432,6 +436,7 @@ export default {
 		console.log(GetQueryString('code'), 56);
 
 		this.course_id = GetQueryString('course_id');
+		this.invite = GetQueryString('invite');
 		if (this.$GetQueryString('active')) {
 			this.active = this.$GetQueryString('active');
 		}
