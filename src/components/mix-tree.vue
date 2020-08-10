@@ -45,7 +45,7 @@
                             v-if="item.status === 1"
                             class="audition"
                             :class="{x:item.show && item.level === 1||item.level === 2||item.level === 3}"
-                        >试听</div>
+                        >{{type==1?'试看':'试听'}}</div>
                         <div
                             v-if="item.status === 2"
                             class="play"
@@ -89,7 +89,13 @@ export default {
             default() {
                 return {};
             }
-        }
+        },
+        type: {
+			type: Number,
+			default() {
+				return 0;
+			}
+		}
     },
     data() {
         return {

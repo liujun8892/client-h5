@@ -72,7 +72,7 @@
 			<div class="loadimage" v-for="(item, index) of courseIntroduce.course_poster" :key="index"><img v-lazy="$iconURL + item" /></div>
 		</div>
 		<div class="cutTab_contents" :class="{ cutTab_bottom: !courseIntroduce.is_buy }" v-show="active == 2 || courseIntroduce.is_buy">
-			<mix-tree :list="list" :params="treeParams" @treeItemClick="treeItemClick" ref="mixTree"></mix-tree>
+			<mix-tree :list="list" :params="treeParams" @treeItemClick="treeItemClick" ref="mixTree" :type="courseIntroduce.type"></mix-tree>
 			<div class="cutTab_bottoms">- 下面没有了 -</div>
 		</div>
 
@@ -605,6 +605,12 @@ export default {
 					color: rgba(255, 255, 255, 1);
 					line-height: 1.3;
 					min-height: 72px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					line-clamp: 2;
+					-webkit-box-orient: vertical;
 				}
 				.course_desc {
 					margin: 38px 0 10px 0;

@@ -7,7 +7,7 @@ const state = {
     baseURL: JSON.parse(localStorage.getItem(`base_url`) ) //axios的默认请求地址
         || {
         production: '//qtsxapi.qingtingshuxia.com',
-        test: '//testqtsxapi.qingtingshuxia.com',
+        test: '//qtsxapi.qingtingshuxia.com',
         dev:'http://192.168.1.198'
         },
     appName: JSON.parse(localStorage.getItem(`app_name`)) || '',//项目名称
