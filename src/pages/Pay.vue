@@ -323,11 +323,13 @@ export default {
         payment(is_collage, collage_order_no) {
             let params = {
                 course_id: this.course_id,
-                pay_type: 2,
-                invite: this.invite
+                pay_type: 2
                 // is_collage: is_collage,
                 // collage_order_no: collage_order_no
             };
+            if(this.invite && this.invite!='' && this.invite!='false'){
+                params.invite=this.invite;
+            }
             this.$api.createBuyCourseWap(params).then(res => {
                 console.log(res);
                 if (res.code == 200) {

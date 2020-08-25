@@ -62,12 +62,14 @@ axios.interceptors.request.use( //请求前拦截
 
 axios.interceptors.response.use(
     response => {
-        console.log(response, 92)
+        // console.log(response, 92)
         //请先登录
         if (response.data.code == "1001" || response.data.code == "1003" || response.data.code == "1410" ) {
             // 错误
             let instance = Toast(response.data.msg);
             let tem = null;
+            console.log(response.data);
+            // return false;
             // 清除Session
             clearStorage();
             tem = setTimeout(() => {
@@ -75,8 +77,14 @@ axios.interceptors.response.use(
                 // router.push("/h5");
                 if(window.location.href.indexOf('answer')!=-1){
                     window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=questionnaire';
+                }else if(window.location.href.indexOf('article')!=-1){
+                    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=article&article_id=' + GetQueryString('article_id');
                 }else{
-                    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=h5login&course_id=' + GetQueryString('course_id');
+                    let url = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=h5login&course_id=' + GetQueryString('course_id');
+                    if(GetQueryString('invite')){
+                        url = url+ "&invite=" + GetQueryString('invite')
+                    }
+                    window.location.href = url;
                 }
                 clearTimeout(tem);
             }, 1000);
@@ -100,8 +108,14 @@ axios.interceptors.response.use(
                 instance.close();
                 if(window.location.href.indexOf('answer')!=-1){
                     window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=questionnaire';
+                }else if(window.location.href.indexOf('article')!=-1){
+                    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=article&article_id=' + GetQueryString('article_id');
                 }else{
-                    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=h5login&course_id=' + GetQueryString('course_id');
+                    let url = store.state.UserInfo.baseURL.test+'/api/shareIndex?view=h5login&course_id=' + GetQueryString('course_id');
+                    if(GetQueryString('invite')){
+                        url = url+ "&invite=" + GetQueryString('invite')
+                    }
+                    window.location.href = url;
                 }
                 clearTimeout(tem);
             }, 1000);

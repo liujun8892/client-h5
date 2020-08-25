@@ -42,7 +42,7 @@
 			</div>
 		</div>
 		<div v-if="courseIntroduce.type==1">
-			<div class="videoBg" style="background-color: #f00;" ></div>
+			<div class="videoBg"></div>
 			<video id="myVideo" ref="myVideo"
 				class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9"
 				controls type="application/x-mpegURL" allowsInlineMediaPlayback=YES webview.allowsInlineMediaPlayback=YES
@@ -168,7 +168,7 @@ export default {
 					playbackRateMenuButton: true,
 				}
 			},
-			invite:''
+			invite:0
 		};
     },
 	methods: {
@@ -335,7 +335,10 @@ export default {
 		authorize() {
 			this.$api.getCourse({ course_id: this.course_id }).then(res => {
 				this.loading_show = false;
-				if (res.code != 200) return;
+				if (res.code != 200) {
+					Dialog({ message: res.msg });
+					return
+				};
 				this.courseIntroduce = res.data;
 				this.list = res.data.list;
                 if (!res.data.is_buy) {
@@ -348,10 +351,12 @@ export default {
                         this.showOverlay = true;
                     }
 				}
-				console.log(this.$refs.myVideo)
-				this.$nextTick(()=>{
-					this.player = videojs(this.$refs.myVideo, this.options);
-				})
+				if(this.courseIntroduce.type==1){
+					console.log(this.$refs.myVideo)
+					this.$nextTick(()=>{
+						this.player = videojs(this.$refs.myVideo, this.options);
+					})
+				}
             });
             
 		},
@@ -366,10 +371,13 @@ export default {
             //调用微信支付
             let params = {
                 course_id: this.course_id,
-                pay_type: 2,
-                is_collage: 1,
-                collage_order_no: this.collage_order_no
-            };
+                pay_type: 2
+                // is_collage: 1,
+                // collage_order_no: this.collage_order_no
+			};
+			if(this.invite && this.invite!='' && this.invite!='false'){
+                params.invite=this.invite;
+            }
 			this.$api.createBuyCourseWap(params).then(res => {
 				console.log(res, 'createBuyCourseWap');
 				if (res.code == 200) {
@@ -429,6 +437,33 @@ export default {
 					Dialog({ message: res.msg });
 				}
 			});
+		},
+		getShareAddress(){
+			let url=location.href.split('#')[0];
+			console.log('url',url);
+			//encodeURIComponent(url)
+			this.$api.getShareAddress({ type: 5, course_id: this.course_id, url: url }).then(res => {
+				console.log('获取分享信息');
+				console.log(res)
+				if (res.code == 200) {
+					this.doShare(res.data);
+				}
+			});
+		},
+		doShare(shareInfo) {
+			let data=shareInfo.config;
+			// wxconfig(shareInfo);
+			wechatInterface(
+				data,
+				()=>{
+					console.log('分享成功')
+				},
+				()=>{
+					console.log('分享失败')
+				},
+				true,
+				shareInfo
+			);
 		}
 	},
 	created() {
@@ -446,6 +481,7 @@ export default {
 				console.log(res);
 				if (res.code == 200) {
 					this.$store.dispatch('saveToken', res.data.token);
+					this.getShareAddress();
 					this.is_bindphone = res.data.is_bindphone;
 					this.authorize();
 				}

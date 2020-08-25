@@ -146,6 +146,7 @@ export default {
                         return;
                     } else {
                         let course_id = this.$GetQueryString("course_id") || "";
+                        let invite = this.$GetQueryString("invite") || "";
 
                         if (this.is_free) {
                             this.$emit('emitFree');
@@ -157,7 +158,10 @@ export default {
                             }else{
                                 this.$router.push({
                                     path: "/h5/pay",
-                                    query: { course_id }
+                                    query: { 
+                                        course_id:course_id,
+                                        invite:invite 
+                                    }
                                 });
                             }
                             
