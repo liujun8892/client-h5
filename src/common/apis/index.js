@@ -23,6 +23,17 @@ export const informationDetail = (data) => post(`informationDetail`,designSign(d
 
 export const getShareAddress = (data) => post(`getShareAddress`,designSign(data)); // 
 
+export const userPostDetail = (data) => post(`userPostDetail`,designSign(data)); // 问答、话题详情
+export const getCommentListWoods = (data) => post(`getCommentListWoods`,designSign(data)); // 评论列表
+export const thingsDetail = (data) => post(`thingsDetail`,designSign(data)); // 宝贝详情
+export const woodsPostDetail = (data) => post(`woodsPostDetail`,designSign(data)); // 树林动态详情
+export const userWoodsIdentity = (data) => post(`userWoodsIdentity`,designSign(data)); // 树林身份
+export const woodsDetail = (data) => post(`woodsDetail`,designSign(data)); // 树林详情
+export const thingsList = (data) => post(`thingsList`,designSign(data)); // 宝贝列表
+export const woodsPostList = (data) => post(`woodsPostList`,designSign(data)); // 动态列表
+export const getWoodsNoticeDetail = (data) => post(`getWoodsNoticeDetail`,designSign(data)); // 公告详情
+
+
 
 
 

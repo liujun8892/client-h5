@@ -60,6 +60,30 @@ const routes = [ {
     path:'/h5/article', 
     name:'Article', 
     component:() => import('../pages/Article.vue')
+  },  {
+    path:'/h5/userPostDetail', 
+    name:'UserPostDetail', 
+    component:() => import('../pages/UserPostDetail.vue')
+  },  {
+    path:'/h5/userTopicDetail', 
+    name:'UserTopicDetail', 
+    component:() => import('../pages/UserTopicDetail.vue')
+  },  {
+    path:'/h5/thing', 
+    name:'Thing', 
+    component:() => import('../pages/Thing.vue')
+  },  {
+    path:'/h5/woodsPost', 
+    name:'WoodsPost', 
+    component:() => import('../pages/WoodsPost.vue')
+  },  {
+    path:'/h5/woodsDetail', 
+    name:'WoodsDetail', 
+    component:() => import('../pages/WoodsDetail.vue')
+  },  {
+    path:'/h5/notice', 
+    name:'Notice', 
+    component:() => import('../pages/Notice.vue')
   }
 ]
 
