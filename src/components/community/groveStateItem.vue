@@ -1,7 +1,7 @@
 <template>
 	<div class="groveStateItem">
 		<div class="user_info">
-			<div class="left" @click.stop="$mRouter.push({ route: $mRoutesConfig.othersIntro, query: { type: 1, uid: item.user_info.id } })">
+			<div class="left">
 				<img :src="imgUrs(item.user_info.avatar)" mode="aspectFill"/>
 				<div class="user_info_right">
 					<div class="">{{ item.user_info.nick }}</div>
@@ -10,21 +10,21 @@
 			</div>
 		</div>
 		<div class="topic">#{{ item.topic }}#</div>
-		<div class="content" @click.stop="toPostDetails">{{ item.content }}</div>
+		<div class="content">{{ item.content }}</div>
 		<div class="imgs_odd" v-if="item.imgs.length == 1"><img :src="iconURL + item.imgs[0]" mode="aspectFill"/></div>
 		<div v-if="item.imgs.length >= 2" class="imgs">
 			<img v-for="(items, index) in [...item.imgs]" :key="index" :src="iconURL + items" mode="aspectFill"/>
 		</div>
 		<div class="item_bottom">
-			<div class="share" @click.stop="$refs.woodsShare.open(7, item.id)">
+			<div class="share">
 				<i></i>
 				分享
 			</div>
-			<div class="comment" @click.stop="toPostDetails">
+			<div class="comment">
 				<b></b>
 				评论
 			</div>
-			<div class="praise" @click.stop="good_num(itemIndex, item.is_clickgood, item.good_num)">
+			<div class="praise">
 				<em v-if="!item.is_clickgood"></em>
 				<b v-else></b>
 				{{ item.good_num }}

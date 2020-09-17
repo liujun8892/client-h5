@@ -32,6 +32,9 @@ export const woodsDetail = (data) => post(`woodsDetail`,designSign(data)); // �
 export const thingsList = (data) => post(`thingsList`,designSign(data)); // 宝贝列表
 export const woodsPostList = (data) => post(`woodsPostList`,designSign(data)); // 动态列表
 export const getWoodsNoticeDetail = (data) => post(`getWoodsNoticeDetail`,designSign(data)); // 公告详情
+export const joinWoods = (data) => post(`joinWoods`,designSign(data)); // 加入树林
+
+
 
 
 

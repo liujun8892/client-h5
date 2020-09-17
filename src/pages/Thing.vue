@@ -34,7 +34,7 @@
 		
 		<commentList ref="commentListWoods" :user_post_id="thing_id" :mold="2" style="padding:0 6px" v-if="product.name"></commentList>
 
-		<div class="commit_box">
+		<div class="commit_box" @click="toDownload">
 			<img class="avatar" :src="product.myself_avatar"/>
 			<div class="innder_box">看对眼就赶紧留言，问问更多细节</div>
 		</div>
@@ -45,8 +45,10 @@
 <script>
 import commentList from '@/components/community/commentList.vue';
 import wechatInterface from '@/common/config/wechatInterface';
+import schemes from '@/common/utils/schemes.js';
 import { GetQueryString } from '@/common/utils/mixin.js';
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { Dialog } from 'vant';
 import "swiper/css/swiper.css";
 export default {
 	components: {
@@ -70,6 +72,16 @@ export default {
 		};
 	},
 	methods: {
+		toDownload(){
+			var schemesObj = {
+              pkgname: 'com.listeningtrees.webapp',
+              appleId: '1503106436',
+              app_qq: 'https://a.app.qq.com/o/simple.jsp?pkgname=',
+              appleUrl: ' https://itunes.apple.com/cn/app/id'
+            }
+            var isschemes = new schemes('listeningtrees://', schemesObj)
+            isschemes.init()
+		},
 		//宝贝详情
 		thingsDetail() {
 			this.$api.thingsDetail({ thing_id: this.thing_id }).then(res => {

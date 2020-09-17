@@ -7,15 +7,15 @@
 				<div class="center">
 					<div class="name">{{ woods_info.name }}</div>
 					<div class="people_num">{{ woods_info.people_num }}人在这里</div>
-					<div class="avatar_bottom">
+					<div class="avatar_bottom" >
 						<img class="avatar" v-for="(item, index) of woods_info.member_info" :src="item.avatar"  :key="index"/>
-						<van-icon name="arrow" :size="12" color="#fff"/>
+						<van-icon name="arrow" :size="12" color="#fff" @click="toDownload"/>
 					</div>
 				</div>
 				<div v-if="user_identity === 0" class="left" @click.stop="joinWoods">{{ text }}</div>
 			</div>
 		</div>
-		<div class="notice-box">
+		<div class="notice-box" @click="toDownload">
 			<div class="left_box">公告</div>
 			<div class="">{{ notice }}</div>
 		</div>
@@ -40,10 +40,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="publishBtn">
+		<!-- <div class="publishBtn">
 			<div class="">+</div>
 			<div class="text">发布</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -53,6 +53,8 @@ import waterfall from '@/components/community/waterfall.vue';
 import groveStateItem from '@/components/community/groveStateItem';
 import wechatInterface from '@/common/config/wechatInterface';
 import { GetQueryString } from '@/common/utils/mixin.js';
+import schemes from '@/common/utils/schemes.js';
+import { Dialog } from 'vant';
 
 export default {
 	computed: {
@@ -100,6 +102,16 @@ export default {
 		};
 	},
 	methods: {
+		toDownload(){
+			var schemesObj = {
+              pkgname: 'com.listeningtrees.webapp',
+              appleId: '1503106436',
+              app_qq: 'https://a.app.qq.com/o/simple.jsp?pkgname=',
+              appleUrl: ' https://itunes.apple.com/cn/app/id'
+            }
+            var isschemes = new schemes('listeningtrees://', schemesObj)
+            isschemes.init()
+		},
 		userWoodsIdentity(){
 			let self = this;
 			this.$api.userWoodsIdentity({woods_id:this.woods_id}).then(res=>{
@@ -114,7 +126,35 @@ export default {
 			})
 		},
 		joinWoods() {
-			Dialog({ message: '请下载app操作' });
+			// Dialog({ message: '请下载app操作' });
+			this.$api.joinWoods({ woods_id: this.woods_id }).then(res => {
+				switch (res.code) {
+					case 200:
+						console.log(res);
+						this.userWoodsIdentity();
+						this.woodsDetail(this.woods_id);
+						this.$dalog
+							.confirm({
+								title: '加入成功',
+								message: '下载APP即可获得完整体验',
+								width: '72vw',
+								className: 'DialogNmae',
+								confirmButtonText: '去下载',
+								cancelButtonText: '知道了'
+							})
+							.then(() => {
+								// on confirm
+								// this.$router.push({ path: '/h5/download' });
+								this.toDownload();
+							})
+							.catch(() => {
+								// on cancel
+							});
+						break;
+					default:
+						break;
+				}
+			});
 		},
 		woodsDetail(woods_id) {
 			// 获取树林详情

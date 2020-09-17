@@ -14,12 +14,12 @@
 					</div>
 				</div>
 				<div class="content_bottom">
-					<div class="item">
+					<div class="item" @click="toDownload">
 						<img src="../assets/images/community/praise.png" v-show="!postDe.is_clickgood"/>
 						<img src="../assets/images/community/praise2.png" v-show="postDe.is_clickgood"/>
 						<span>{{postDe.good_num}}</span>
 					</div>
-					<div class="item talk">
+					<div class="item talk" @click="toDownload">
 						<img src="../assets/images/community/comment.png"/>
 						<span>评论</span>
 					</div>
@@ -28,7 +28,7 @@
 			
 			<commentList ref="commentListWoods" :user_post_id="user_post_id" :mold="4" v-if="postDe.title"></commentList>
 
-			<div class="commit_box"><div class="innder_box">我想说点什么...</div></div>
+			<div class="commit_box"><div class="innder_box" @click="toDownload">我想说点什么...</div></div>
 			
 		</div>
 	</div>
@@ -38,6 +38,8 @@
 import commentList from '@/components/community/commentList.vue';
 import wechatInterface from '@/common/config/wechatInterface';
 import { GetQueryString } from '@/common/utils/mixin.js';
+import schemes from '@/common/utils/schemes.js';
+import { Dialog } from 'vant';
 
 export default {
 	components: { commentList },
@@ -53,6 +55,16 @@ export default {
 		};
 	},
 	methods: {
+		toDownload(){
+			var schemesObj = {
+              pkgname: 'com.listeningtrees.webapp',
+              appleId: '1503106436',
+              app_qq: 'https://a.app.qq.com/o/simple.jsp?pkgname=',
+              appleUrl: ' https://itunes.apple.com/cn/app/id'
+            }
+            var isschemes = new schemes('listeningtrees://', schemesObj)
+            isschemes.init()
+		},
 		// 帖子详情
 		userPostDetail() {
 			this.$api.userPostDetail({ user_post_id: this.user_post_id, type: 1 }).then(res => {
@@ -175,6 +187,7 @@ body{
 			line-height:42px;
 			margin-bottom: 10px;
 			word-break: break-all;
+			white-space: pre-wrap;
 		}
 		.content_imag{
 			margin-bottom: 10px;

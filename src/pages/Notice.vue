@@ -17,12 +17,12 @@
 					</div>
 				</div>
 				<div class="content_bottom">
-					<div class="item">
+					<div class="item" @click="toDownload">
 						<img src="../assets/images/community/praise.png" v-show="!postDe.is_clickgood"/>
 						<img src="../assets/images/community/praise2.png" v-show="postDe.is_clickgood"/>
 						<span>{{postDe.good_num}}</span>
 					</div>
-					<div class="item talk">
+					<div class="item talk" @click="toDownload">
 						<img src="../assets/images/community/comment.png"/>
 						<span>评论</span>
 					</div>
@@ -42,6 +42,7 @@ import commentList from '@/components/community/commentList.vue';
 import { GetQueryString } from '@/common/utils/mixin.js';
 import wechatInterface from '@/common/config/wechatInterface';
 import schemes from '@/common/utils/schemes.js';
+import { Dialog } from 'vant';
 
 export default {
 	components: { commentList },

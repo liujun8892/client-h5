@@ -17,12 +17,12 @@
 					</div>
 				</div>
 				<div class="content_bottom">
-					<div class="item">
+					<div class="item" @click="toDownload">
 						<img src="../assets/images/community/praise.png" v-show="!postDe.is_clickgood"/>
 						<img src="../assets/images/community/praise2.png" v-show="postDe.is_clickgood"/>
 						<span>{{postDe.good_num}}</span>
 					</div>
-					<div class="item talk">
+					<div class="item talk" @click="toDownload">
 						<img src="../assets/images/community/comment.png"/>
 						<span>评论</span>
 					</div>
@@ -31,7 +31,7 @@
 			
 			<commentList ref="commentListWoods" :user_post_id="woods_post_id" :mold="1" v-if="postDe.topic"></commentList>
 
-			<div class="commit_box"><div class="innder_box">我想说点什么...</div></div>
+			<div class="commit_box"><div class="innder_box" @click="toDownload">我想说点什么...</div></div>
 			
 		</div>
 	</div>
@@ -41,6 +41,8 @@
 import commentList from '@/components/community/commentList.vue';
 import { GetQueryString } from '@/common/utils/mixin.js';
 import wechatInterface from '@/common/config/wechatInterface';
+import schemes from '@/common/utils/schemes.js';
+import { Dialog } from 'vant';
 
 export default {
 	components: { commentList },
@@ -56,6 +58,16 @@ export default {
 		};
 	},
 	methods: {
+		toDownload(){
+			var schemesObj = {
+              pkgname: 'com.listeningtrees.webapp',
+              appleId: '1503106436',
+              app_qq: 'https://a.app.qq.com/o/simple.jsp?pkgname=',
+              appleUrl: ' https://itunes.apple.com/cn/app/id'
+            }
+            var isschemes = new schemes('listeningtrees://', schemesObj)
+            isschemes.init()
+		},
 		woodsPostDetail() {
 			this.$api.woodsPostDetail({ woods_post_id: this.woods_post_id }).then(res => {
 				// console.log(res);
