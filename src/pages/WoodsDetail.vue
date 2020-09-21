@@ -26,7 +26,7 @@
 					<div @click="cut(index)" :class="['operation_item', { active: cutIndex == index }]" v-for="(item, index) in operationList" :key="index">{{ item.name }}</div>
 				</div>
 			</div>
-			<waterfall :isEmpty="isEmpty" :iconURL="iconURL" v-if="thingsLists.length >= 1 && cutIndex == 0" :dataLists="thingsLists"></waterfall>
+			<waterfall @goBaby="goBaby" :isEmpty="isEmpty" :iconURL="iconURL" v-if="thingsLists.length >= 1 && cutIndex == 0" :dataLists="thingsLists"></waterfall>
 			<div class="woodsPostLists">
 				<div v-for="(item, index) of woodsPostLists" :key="index" v-if="cutIndex == 1">
 					<groveStateItem
@@ -36,6 +36,7 @@
 						:iconURL="iconURL"
 						:item="item"
 						:itemIndex="index"
+						@toPostDetails="toPostDetails"
 					></groveStateItem>
 				</div>
 			</div>
@@ -102,6 +103,22 @@ export default {
 		};
 	},
 	methods: {
+		goBaby(id){
+			this.$router.push({
+				path: '/h5/thing',
+				query: {
+					thing_id:id
+				}
+			});
+		},
+		toPostDetails(id){
+			this.$router.push({
+				path: '/h5/woodsPost',
+				query: {
+					woods_post_id:id
+				}
+			});
+		},
 		toDownload(){
 			var schemesObj = {
               pkgname: 'com.listeningtrees.webapp',

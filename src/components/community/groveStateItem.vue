@@ -9,25 +9,27 @@
 				</div>
 			</div>
 		</div>
-		<div class="topic">#{{ item.topic }}#</div>
-		<div class="content">{{ item.content }}</div>
-		<div class="imgs_odd" v-if="item.imgs.length == 1"><img :src="iconURL + item.imgs[0]" mode="aspectFill"/></div>
-		<div v-if="item.imgs.length >= 2" class="imgs">
-			<img v-for="(items, index) in [...item.imgs]" :key="index" :src="iconURL + items" mode="aspectFill"/>
-		</div>
-		<div class="item_bottom">
-			<div class="share">
-				<i></i>
-				分享
+		<div @click="toPostDetails">
+			<div class="topic">#{{ item.topic }}#</div>
+			<div class="content">{{ item.content }}</div>
+			<div class="imgs_odd" v-if="item.imgs.length == 1"><img :src="iconURL + item.imgs[0]" mode="aspectFill"/></div>
+			<div v-if="item.imgs.length >= 2" class="imgs">
+				<img v-for="(items, index) in [...item.imgs]" :key="index" :src="iconURL + items" mode="aspectFill"/>
 			</div>
-			<div class="comment">
-				<b></b>
-				评论
-			</div>
-			<div class="praise">
-				<em v-if="!item.is_clickgood"></em>
-				<b v-else></b>
-				{{ item.good_num }}
+			<div class="item_bottom">
+				<div class="share">
+					<i></i>
+					分享
+				</div>
+				<div class="comment">
+					<b></b>
+					评论
+				</div>
+				<div class="praise">
+					<em v-if="!item.is_clickgood"></em>
+					<b v-else></b>
+					{{ item.good_num }}
+				</div>
 			</div>
 		</div>
 	</div>
