@@ -9,7 +9,9 @@ import clearStorage from './clear'
 // import router from '../../router'
 import {GetQueryString} from '../utils/mixin'
 
-var root =store.state.UserInfo.baseURL.test;
+// var root = store.state.UserInfo.baseURL.test;
+var root =store.state.UserInfo.baseURL.production;
+
 
 
 
@@ -149,7 +151,8 @@ function toUrl(){
         }
         break;
     }
-    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
+    // window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
+    window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
 }
 
 
