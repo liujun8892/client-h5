@@ -34,9 +34,12 @@ export const woodsPostList = (data) => post(`woodsPostList`,designSign(data)); /
 export const getWoodsNoticeDetail = (data) => post(`getWoodsNoticeDetail`,designSign(data)); // 公告详情
 export const joinWoods = (data) => post(`joinWoods`,designSign(data)); // 加入树林
 
-
-
-
+export const getActivityIndex = (data) => post(`getActivityIndex`,designSign(data)); // 99读书活动获取活动首页信息
+export const getH5AddressArea = (data) => post(`getH5AddressArea`,designSign(data)); // 99读书活动获取省市区地址
+export const getDefaultUserAddress = (data) => post(`getDefaultUserAddress`, designSign(data)); // 99读书活动获取用户默认的收货地址
+export const confirmActivityOrder = (data) => post(`confirmActivityOrder`,designSign(data)); // 99读书确认订单活动礼包列表
+export const addUserAddress = (data) => post(`addUserAddress`,designSign(data)); // 99读书添加修改收货地址
+export const createBuyActivityWap = (data) => post(`createBuyActivityWap`,designSign(data)); // 99读书获取支付信息
 
 
 

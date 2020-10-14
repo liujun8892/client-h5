@@ -84,7 +84,22 @@ const routes = [ {
     path:'/h5/notice', 
     name:'Notice', 
     component:() => import('../pages/Notice.vue')
-  }
+  },
+  {
+    path:'/h5/activityIndex', 
+    name:'ActivityIndex', 
+    component:() => import('../pages/ActivityIndex')
+  },
+  {
+    path:'/h5/activities', 
+    name:'Activities', 
+    component:() => import('../pages/Activities')
+  },
+  {
+    path:'/h5/activitiesPay', 
+    name:'ActivitiesPay', 
+    component:() => import('../pages/ActivitiesPay')
+  },
 ]
 
 const router = new VueRouter( {

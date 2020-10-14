@@ -9,8 +9,8 @@ import clearStorage from './clear'
 // import router from '../../router'
 import {GetQueryString} from '../utils/mixin'
 
-// var root = store.state.UserInfo.baseURL.test;
-var root =store.state.UserInfo.baseURL.production;
+var root = store.state.UserInfo.baseURL.test;
+// var root =store.state.UserInfo.baseURL.production;
 
 
 
@@ -144,15 +144,27 @@ function toUrl(){
       case 'thing':
         urlParams='thing&relation_id=' + GetQueryString('thing_id');
         break;
-      default:
+     case 'activityIndex':
+        urlParams='activityIndex&relation_id=' + GetQueryString('activity_id');
+        break;
+    case 'activities':
+        urlParams='activities&relation_id=' +  GetQueryString('relation_id');
+        break;
+    case 'activitiesPay':
+            urlParams = 'activitiesPay' + "&relation_id=" + GetQueryString('relation_id') + "&gift_id=" + GetQueryString('gift_id');
+            if(GetQueryString('invite')){
+                urlParams = urlParams+ "&invite=" + GetQueryString('invite')
+              }
+        break;    
+    default:
         urlParams='h5login&relation_id=' + GetQueryString('course_id');
         if(GetQueryString('invite')){
           urlParams = urlParams+ "&invite=" + GetQueryString('invite')
         }
         break;
     }
-    // window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
-    window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
+    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
+    // window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
 }
 
 

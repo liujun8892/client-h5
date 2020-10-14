@@ -12,7 +12,9 @@ import {
   NavBar,
   Toast,
   Lazyload,
-  Dialog
+  Dialog,
+  Area,
+  Popup
 } from 'vant';
 import '@/assets/css/rest.css'
 
@@ -33,10 +35,13 @@ Vue.use(VueTouch, {
 })
 
 Vue.use(NavBar);
+Vue.use(Area);
+Vue.use(Popup);
 // Vue.use(Toast);
 Vue.prototype.$toast = Toast;
 
 router.beforeEach((to, from, next) => {
+  
   function redirectUrl() {
     const url = window.location.href;
     // 解决多次登录url添加重复的code与state问题 
@@ -46,6 +51,7 @@ router.beforeEach((to, from, next) => {
     // debugger
     if (urlParams.code) {
       store.dispatch('saveCode', GetQueryString('code'))
+      // store.dispatch('saveToken', GetQueryString('code'))
       delete urlParams.code;
       const query = qs.stringify(urlParams);
       if (query.length) {
@@ -62,6 +68,10 @@ router.beforeEach((to, from, next) => {
     next()
     return;
   }
+  // if (to.path == '/h5/activityIndex') {
+  //   next()
+  //   return;
+  // }
   // console.log(store.state.UserInfo.code,11);
   // console.log(localStorage.getItem('code'));
   // console.log(GetQueryString('code'));
@@ -103,6 +113,18 @@ router.beforeEach((to, from, next) => {
       case 'thing':
         urlParams='thing&relation_id=' + GetQueryString('thing_id');
         break;
+      case 'activityIndex':
+          urlParams='activityIndex&relation_id=' + GetQueryString('activity_id');
+        break;
+      case 'activities':
+          urlParams='activities&relation_id=' +  GetQueryString('relation_id');
+        break;
+      case 'activitiesPay':
+        urlParams = 'activitiesPay' + "&relation_id=" + GetQueryString('relation_id') + "&gift_id=" + GetQueryString('gift_id');
+        if(GetQueryString('invite')){
+          urlParams = urlParams+ "&invite=" + GetQueryString('invite')
+        }
+      break;
       default:
         urlParams='h5login&relation_id=' + GetQueryString('course_id');
         if(GetQueryString('invite')){
