@@ -111,16 +111,14 @@ export default {
                   });
                 })
                 .catch(() => {
-                  this.$router.go(-1);
                   this.$router.push({
-                    path: '/h5/course',
-                    query: {
-                      active: 2,
-                      course_id: this.course_id
-                    }
+                    path: '/h5/activityIndex'
+                    // query: {
+                    //   active: 2,
+                    //   course_id: this.course_id
+                    // }
                   });
-                  // that.$toast("取消支付");
-                  // on cancel
+                  console.log('回活动页');
                 });
             }, //成功
             () => {

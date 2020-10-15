@@ -132,7 +132,8 @@ router.beforeEach((to, from, next) => {
         }
         break;
     }
-    window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
+    // window.location.href = store.state.UserInfo.baseURL.test + '/api/shareIndex?view=' + urlParams;
+    window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
   }
 });
 new Vue({

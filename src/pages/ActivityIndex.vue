@@ -269,8 +269,8 @@ html {
 
     p {
       margin-bottom: 16px;
-      font-size: 14px !important;
-      line-height: 1.8;
+      // font-size: 14px !important;
+      // line-height: 1.8;
       font-family: PingFang SC;
     }
 
