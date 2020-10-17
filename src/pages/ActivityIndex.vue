@@ -50,6 +50,9 @@
 </template>
 
 <script>
+import {
+  CellGroup
+} from 'vant';
 export default {
   computed: {
     iconURL() {
@@ -71,30 +74,11 @@ export default {
       colors: 0,
       // 活动id
       relation_id: 1,
-      invite: ''
+      invite: '',
+      show: false,
     }
   },
   methods: {
-    // 提示去下载页
-    goDownPage() {
-      this.$dalog
-        .confirm({
-          title: '您已购买',
-          message: '下载APP即可获得完整体验',
-          width: '72vw',
-          className: '99读书活动',
-          confirmButtonText: '去下载',
-          cancelButtonText: '知道了'
-        })
-        .then(() => {
-          // on confirm
-          this.$router.push({
-            path: '/h5/download'
-          });
-        }).catch(() => {
-          // on cancel
-        });
-    },
 
     // 获取首页信息
     getActivityIndex() {
@@ -105,16 +89,21 @@ export default {
         switch (res.code) {
           case 200:
             if (res.data.is_buy) {
-              this.goDownPage()
+              this.show = true
             }
             this.is_buy = res.data.is_buy;
             this.activity = res.data.list;
             this.relation_id = res.data.list.id
-
             break;
           default:
             break;
         }
+      });
+    },
+    // 提示去下载页
+    goDownPage() {
+      this.$router.replace({
+        path: '/h5/download'
       });
     },
     // 去活动详情页面
@@ -127,7 +116,10 @@ export default {
           path: '/h5/activities?relation_id=' + this.relation_id + '&invite=' + this.invite
         })
       }
-
+    },
+    // 关闭弹层
+    close() {
+      this.show = false
     }
   },
 

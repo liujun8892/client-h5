@@ -82,6 +82,9 @@
         </div>
       </div>
     </div>
+    <!-- 自定义滚动条 -->
+    <div class="scroll_bar" :style="scrollBarTop"></div>
+
     <!-- 订单其他信息 -->
     <div class="order_other_info">
       <div class="info_name">运费</div>
@@ -517,18 +520,7 @@ export default {
 </script>
 
 <style lang="less">
-html {
-  /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
-  -ms-overflow-style: none;
-  /*火狐下隐藏滚动条*/
-  overflow: -moz-scrollbars-none;
-  background-color: #f7f7f7;
-}
-
 //谷歌适用
-::-webkit-scrollbar {
-  display: none;
-}
 
 #activites {
   background-color: #f7f7f7;
@@ -682,16 +674,28 @@ html {
     background: #ffffff;
     border-radius: 16px;
 
+    // 滚动条
+    .scroll_bar {
+      position: absolute;
+      width: 10rpx;
+      height: 40rpx;
+      background-color: rgba(0, 0, 0, 0.3);
+      top: 35rpx;
+      right: 12rpx;
+      border-radius: 5rpx;
+      transition: top 0.02s;
+    }
+
     // 纵向滑动商品列表
     .order_goods_swrap {
       width: 100%;
       height: 594px - 35 - 23;
       margin-bottom: 23px;
-      overflow: scroll;
+      overflow: auto;
 
       // 商品条目
       .order_goods_item {
-        margin-bottom: 42px;
+        margin-bottom: 10px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -752,6 +756,27 @@ html {
         }
 
       }
+    }
+
+    /* 定义滚动条样式 */
+    .order_goods_swrap::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      background-color: rgba(240, 240, 240, 1);
+    }
+
+    /*定义滚动条轨道 内阴影+圆角*/
+    .order_goods_swrap::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+      border-radius: 10px;
+      background-color: rgba(240, 240, 240, .5);
+    }
+
+    /*定义滑块 内阴影+圆角*/
+    .order_goods_swrap::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+      background-color: rgba(240, 240, 240, .5);
     }
 
     // 订单其他信息

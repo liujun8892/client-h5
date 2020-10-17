@@ -38,6 +38,29 @@
     <div class="pay_btn" @click="confirmPay">确认支付</div>
   </div>
 
+  <!-- 分享活动 -->
+  <div>
+    <van-popup round position="center" v-model="show" closeable @close="hidePopup">
+      <div class="share_popup">
+        <div class="price">
+          ￥20
+        </div>
+        <div class="title">
+          分享好友购买成功，即享20元收益
+        </div>
+        <div class="desc">
+          用知识，表心意，邀请好友一起参与阅读计划吧
+        </div>
+        <div class="share_btn" @click="goDownPage">
+          下载App赢取佣金
+        </div>
+        <div class="cancle_btn" @click="hidePopup">
+          残忍拒绝
+        </div>
+      </div>
+    </van-popup>
+  </div>
+
 </div>
 </template>
 
@@ -64,12 +87,14 @@ export default {
         relation_id: 1,
         pay_type: 2,
         gift_id: 1,
-        invite: ''
+        invite: '',
       },
       // 支付信息
       pay_info: {},
       // 防止重复下单
-      // isOrder: false
+      // isOrder: false,
+      // 弹框显示隐藏
+      show: false
     }
   },
   methods: {
@@ -84,8 +109,21 @@ export default {
       this.createBuyActivityWap()
       console.log('确认支付');
     },
+    // 提示去下载页
+    goDownPage() {
+      this.$router.push({
+        path: '/h5/download'
+      });
+    },
+    //隐藏
+    hidePopup() {
+      this.$router.push({
+        path: '/h5/activityIndex'
+      })
+    },
     // 获取支付信息
     createBuyActivityWap() {
+      let that = this
       console.log('支付参数', this.payParams);
       this.$api.createBuyActivityWap(this.payParams).then(res => {
         // this.isOrder = false
@@ -95,33 +133,11 @@ export default {
           wechatInterface(
             res.data.pay_info,
             () => {
-              this.$dalog
-                .confirm({
-                  title: '支付成功',
-                  message: '下载APP即可获得完整体验',
-                  width: '72vw',
-                  className: 'DialogNmae',
-                  confirmButtonText: '去下载',
-                  cancelButtonText: '知道了'
-                })
-                .then(() => {
-                  // on confirm
-                  this.$router.push({
-                    path: '/h5/download'
-                  });
-                })
-                .catch(() => {
-                  this.$router.push({
-                    path: '/h5/activityIndex'
-                    // query: {
-                    //   active: 2,
-                    //   course_id: this.course_id
-                    // }
-                  });
-                  console.log('回活动页');
-                });
-            }, //成功
+              // 成功
+              this.show = true
+            },
             () => {
+              // 失败
               this.$dalog
                 .confirm({
                   title: '支付失败',
@@ -150,7 +166,7 @@ export default {
       })
     },
   },
-  created(v) {
+  created() {
     this.payParams.relation_id = this.$route.query.relation_id || 1
     this.payParams.gift_id = this.$route.query.gift_id || 1
     this.payParams.invite = this.$route.query.invite || ''
@@ -197,6 +213,75 @@ html {
   width: 100%;
   min-height: 100vh;
   background-color: #f7f7f7;
+
+  .share_popup {
+    position: relative;
+    width: 620px;
+    height: 880px;
+    background: url(../assets/images/active/share_bg.jpg);
+    background-size: 100% 100%;
+    border-radius: 26px 26px 26px 26px;
+
+    .price {
+      position: absolute;
+      font-size: 61px;
+      font-family: SourceHanSansCN;
+      font-weight: 800;
+      color: #FFFFFF;
+      left: 240px;
+      top: 400px;
+      // transform: translateX(-54%);
+    }
+
+    .title {
+      width: 100%;
+      position: absolute;
+      top: 569px;
+      text-align: center;
+      font-size: 32px;
+      font-family: Source Han Serif CN;
+      font-weight: 500;
+      color: #3B3B3B;
+    }
+
+    .desc {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 632px;
+      font-size: 22px;
+      font-family: Source Han Serif CN;
+      font-weight: 400;
+      color: #B9B9B9;
+    }
+
+    .share_btn {
+      position: absolute;
+      width: 356px;
+      height: 90px;
+      top: 707px;
+      left: 131px;
+      background: #FE4858;
+      border-radius: 90px;
+      font-size: 36px;
+      font-family: Source Han Sans CN;
+      font-weight: 500;
+      color: #FFFEFE;
+      text-align: center;
+      line-height: 90px;
+    }
+
+    .cancle_btn {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 814px;
+      font-size: 28px;
+      font-family: SourceHanSansCN;
+      font-weight: 300;
+      color: #B9B9B9;
+    }
+  }
 
   // 99活动选中的礼包
   .gift {
