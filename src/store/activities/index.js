@@ -1,5 +1,5 @@
 const state = {
-    gift: JSON.parse(localStorage.getItem(`gift`))  || {}, // 选中的99礼包
+    gift: localStorage.getItem(`gift`)  || {}, // 选中的99礼包
     
 };
 const mutations = {

@@ -100,6 +100,11 @@ const routes = [ {
     name:'ActivitiesPay', 
     component:() => import('../pages/ActivitiesPay')
   },
+  {
+    path:'/h5/giveUserFriendGift', 
+    name:'ShareBook', 
+    component:() => import('../pages/ShareBook')
+  }
 ]
 
 const router = new VueRouter( {

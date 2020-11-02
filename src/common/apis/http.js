@@ -9,8 +9,8 @@ import clearStorage from './clear'
 // import router from '../../router'
 import {GetQueryString} from '../utils/mixin'
 
-// var root = store.state.UserInfo.baseURL.test;
-var root =store.state.UserInfo.baseURL.production;
+var root = store.state.UserInfo.baseURL.test;
+// var root =store.state.UserInfo.baseURL.production;
 
 
 
@@ -155,6 +155,9 @@ function toUrl(){
             if(GetQueryString('invite')){
                 urlParams = urlParams+ "&invite=" + GetQueryString('invite')
               }
+            break;
+    case 'giveUserFriendGift':
+          urlParams='giveUserFriendGift&invite=' +  GetQueryString('invite');
         break;    
     default:
         urlParams='h5login&relation_id=' + GetQueryString('course_id');
@@ -163,8 +166,8 @@ function toUrl(){
         }
         break;
     }
-    //  window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
-    window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
+     window.location.href = store.state.UserInfo.baseURL.test+'/api/shareIndex?view='+urlParams;
+    // window.location.href = store.state.UserInfo.baseURL.production+'/api/shareIndex?view='+urlParams;
 }
 
 

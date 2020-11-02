@@ -53,6 +53,7 @@
 import {
   CellGroup
 } from 'vant';
+import wechatInterface from '@/common/config/wechatInterface.js';
 export default {
   computed: {
     iconURL() {
@@ -120,6 +121,36 @@ export default {
     // 关闭弹层
     close() {
       this.show = false
+    },
+    getShareAddress() {
+      let url = location.href.split('#')[0];
+      console.log('url', url);
+      //encodeURIComponent(url)
+      this.$api.getShareAddress({
+        type: 12,
+        relation_id: 1,
+        url: url
+      }).then(res => {
+        console.log('获取分享信息');
+        console.log(res)
+        if (res.code == 200) {
+          this.doShare(res.data);
+        }
+      });
+    },
+    doShare(shareInfo) {
+      let data = shareInfo.config;
+      wechatInterface(
+        data,
+        () => {
+          console.log('分享成功')
+        },
+        () => {
+          console.log('分享失败')
+        },
+        true,
+        shareInfo
+      );
     }
   },
 
@@ -141,6 +172,8 @@ export default {
             this.is_bindphone = res.data.is_bindphone;
             // 获取首页信息
             this.getActivityIndex();
+            // 更新刷新地址
+            this.getShareAddress();
           }
         });
     }

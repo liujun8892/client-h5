@@ -170,6 +170,7 @@ export default {
     this.payParams.relation_id = this.$route.query.relation_id || 1
     this.payParams.gift_id = this.$route.query.gift_id || 1
     this.payParams.invite = this.$route.query.invite || ''
+    console.log('礼物信息00...', this.$store.state.Activities.gift);
     this.gift_info = JSON.parse(this.$store.state.Activities.gift)
     console.log('礼物信息...', this.gift_info);
     console.log('query....', this.$route.query);

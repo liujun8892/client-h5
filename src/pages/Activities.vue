@@ -59,7 +59,7 @@
   </div>
 
   <!-- 订单商品列表 -->
-  <div class="order_goods_list">
+  <div class="order_goods_list" v-if="!shareBook">
     <!-- 纵向滑动商品列表 -->
     <div class="order_goods_swrap">
       <!-- 商品条目 -->
@@ -110,16 +110,26 @@
   </div>
 
   <!-- 订单统计底部控件 -->
-  <div class="footer_order_control">
+  <div class="footer_order_control" v-if="!shareBook">
     <div class="price">
       合计
       <span>￥{{(totalPrice + '').length > 1 ? (totalPrice + '.00') : 0}}</span>
     </div>
     <div class="submit_btn" @click="submitOrder">提交订单</div>
   </div>
+
+  <!-- 订单统计底部控件分享图书提交订单 -->
+  <div class="share_book" v-if="shareBook" @click="shareBookToFriend">
+    提交订单
+  </div>
+
+</div>
 </template>
 
 <script>
+import {
+  CellGroup
+} from 'vant';
 export default {
   computed: {
     totalPrice() {
@@ -226,7 +236,8 @@ export default {
       invite: '',
       // 礼物大图img
       bigImgUrl: '',
-      bigImgShow: false
+      bigImgShow: false,
+      shareBook: false
     }
   },
   methods: {
@@ -341,7 +352,7 @@ export default {
     },
     // 验证手机号
     validPhone() {
-      let reg = /^1[34578]\d{9}$/
+      let reg = /^1[0123456789]\d{9}$/
       if (reg.test(this.phone)) {
         this.formWrongArr[1] = 0
         this.phonePlaceholder = '请填写收货人电话号码'
@@ -430,12 +441,17 @@ export default {
       }
     },
     // 校验数据
-    validAllData() {
+    validAllData(isToFriend = false) {
       let namePass = this.validName()
       let phonePass = this.validPhone()
       let addrPass = this.validAddr()
       let addrDetail = this.validAddrDetail()
-      let giftPass = this.validGiftChoosed()
+      let giftPass = false
+      if (isToFriend) {
+        giftPass = true
+      } else {
+        giftPass = this.validGiftChoosed()
+      }
       return namePass && phonePass && addrPass && addrDetail && giftPass
     },
     // 提交订单
@@ -457,6 +473,37 @@ export default {
         path: `./activitiesPay?relation_id=${this.relation_id}&gift_id=${gift_id}` + '&invite=' + this.invite
       })
       console.log('提交订单');
+    },
+    // 分享图书
+    async shareBookToFriend() {
+      // 1. 校验数据
+      let validRes = this.validAllData(true)
+      if (!validRes) return
+      // 2. 添加或修改地址
+      let operatorAddrRes = await this.addOrEditUserAddress()
+      console.log(operatorAddrRes);
+      if (!operatorAddrRes) return
+      // 3. 再次获取用户的收货地址
+      this.getDefaultUserAddress();
+      let params = {
+        address_id: this.address_id,
+        invite: this.invite
+      }
+      console.log(params, '邀请参数。。。');
+      this.$api.giveUserFriendGift(params).then(res => {
+        console.log(res, '领书结果');
+        if (res.code === 200) {
+          this.$toast('领书成功，去下载App')
+        } else {
+          this.$toast(`领书失败，${res.msg}，去下载App`)
+        }
+        setTimeout(() => {
+          this.$router.push({
+            path: '/h5/download'
+          });
+        }, 2200)
+      })
+
     },
     // 聚焦
     toUsernameFocus() {
@@ -491,8 +538,12 @@ export default {
     },
   },
   created() {
+    console.log(this.$route.query, '活动页参数');
     this.relation_id = this.$route.query.relation_id || 1
     this.invite = this.$route.query.invite || '';
+    // 显示分享图书
+    this.shareBook = this.$route.query.share_book === 'show' ? true : false
+    console.log(this.shareBook, '显示按钮。。。。');
     if (
       this.$store.state.UserInfo.code &&
       this.$store.state.UserInfo.token
@@ -533,6 +584,24 @@ export default {
     input::-webkit-input-placeholder {
       color: #FF5555 !important;
     }
+  }
+
+  // 分享图书
+  .share_book {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 680px;
+    height: 83px;
+    left: 35px;
+    bottom: 24px;
+    background: linear-gradient(90deg, #FFD800 0%, #FF8A00 100%);
+    border-radius: 42px;
+    font-size: 34px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    color: #FFFFFF;
   }
 
   input {
@@ -677,12 +746,12 @@ export default {
     // 滚动条
     .scroll_bar {
       position: absolute;
-      width: 10rpx;
-      height: 40rpx;
+      width: 10px;
+      height: 40px;
       background-color: rgba(0, 0, 0, 0.3);
-      top: 35rpx;
-      right: 12rpx;
-      border-radius: 5rpx;
+      top: 35px;
+      right: 12px;
+      border-radius: 5px;
       transition: top 0.02s;
     }
 

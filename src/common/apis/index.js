@@ -41,7 +41,7 @@ export const confirmActivityOrder = (data) => post(`confirmActivityOrder`,design
 export const addUserAddress = (data) => post(`addUserAddress`,designSign(data)); // 99读书添加修改收货地址
 export const createBuyActivityWap = (data) => post(`createBuyActivityWap`,designSign(data)); // 99读书获取支付信息
 
-
+export const giveUserFriendGift = (data) => post(`giveUserFriendGift`,designSign(data)); // 99读书赠送图书
 
 
 
